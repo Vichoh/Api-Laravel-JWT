@@ -12,7 +12,7 @@ class Propiedad extends Model
 	  protected $primaryKey = 'id';
 
 	  protected $fillable = [
-	      'name', 'descripcion', 'id_empresa',
+	      'nombre', 'descripcion', 'id_empresa',
 	  ];
 
 	  public function empresa() {

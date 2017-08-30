@@ -18,7 +18,7 @@ class EmpresaTableSeeder extends Seeder
         	'descripcion'	=> 'Empresa temuco',
         	'web'			=> 'www.AguayoCorredora.cl',
         	'telefono'		=> '98754213',
-        	'id_users'		=> 1
+        	'id_users'		=> 1,
 
 
 

@@ -16,8 +16,9 @@ class CreatePropiedadTable extends Migration
         Schema::create('propiedad', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre')->index();
-            $table->text('descripción');
+            $table->text('descripcion');
             $table->integer('id_empresa')->unsigned()->nullable();
+
             $table->foreign('id_empresa')->references('id')->on('empresa')->onDelete('cascade');
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ class CreatePropiedadTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('propiedad');
     }
 }

@@ -20,8 +20,9 @@ class CreateEmpresaTable extends Migration
             $table->text('descripcion');
             $table->string('web');
             $table->string('telefono');
-
             $table->integer('id_users')->unsigned();
+
+            
             $table->foreign('id_users')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });   
@@ -35,6 +36,6 @@ class CreateEmpresaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('empresa');
     }
 }

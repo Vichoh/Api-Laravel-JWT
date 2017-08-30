@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Empresa;
+use App\User;
 
 
 class EmpresaController extends Controller
@@ -16,7 +17,25 @@ class EmpresaController extends Controller
     public function index()
     {
            $empresas = Empresa::all();
-           return \Response::json($empresas,200);
+
+           $respuesta = array();
+           $contador = 0;
+
+           foreach ($empresas as $empresa) {
+
+                $user = User::find($empresa->id_users);
+
+                $respuesta [$contador]["id"]            = $empresa->id;
+                $respuesta [$contador]["nombre"]        = $empresa->nombre;
+                $respuesta [$contador]["email"]         = $empresa->email;
+                $respuesta [$contador]["descripcion"]   = $empresa->descripcion;
+                $respuesta [$contador]["web"]           = $empresa->web;
+                $respuesta [$contador]["telefono"]      = $empresa->telefono;
+                $respuesta [$contador]["user"]          = $user;
+
+                $contador++;
+           }
+           return \Response::json($respuesta,200);
 
     }
 
@@ -39,6 +58,11 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
 
+
+        if (!is_array($request->all())) {
+            return ['error' => 'request must be an array'];
+        }
+        
         try{
 
             Empresa::create($request->all());
@@ -68,6 +92,17 @@ class EmpresaController extends Controller
 
 
             $empresa = Empresa::findOrFail($id);
+            $respuesta = array();
+
+            $user = User::find($empresa->id_users);
+
+            $respuesta ["id"]            = $empresa->id;
+            $respuesta ["nombre"]        = $empresa->nombre;
+            $respuesta ["email"]         = $empresa->email;
+            $respuesta ["descripcion"]   = $empresa->descripcion;
+            $respuesta ["web"]           = $empresa->web;
+            $respuesta ["telefono"]      = $empresa->telefono;
+            $respuesta ["user"]          = $user;
 
             if (!isset($empresa)) {
 
@@ -85,8 +120,10 @@ class EmpresaController extends Controller
                     'errors'    => true,
                     'msg'       => $e->getMessage(),
                 ]; 
-            return \Response::json($data, 500); 
+            return \Response::json($datos, 500); 
         }
+
+        return \Response::json($respuesta, 200);
         
 
     }
@@ -114,16 +151,17 @@ class EmpresaController extends Controller
         try{
 
             $empresa = Empresa::find($id);
-            $empresa->update($request->all());
+            
            
 
             if (isset($empresa)) {
 
-                \Response::json($empresa, 200);
+                $empresa->update($request->all());
+                return \Response::json($empresa, 200);
 
             }else{
 
-                \Response::json(['error' => 'No se actualizo la empresa'], 404);
+                return \Response::json(['error' => 'No se encontro la empresa'], 404);
 
             }
         

@@ -11,12 +11,14 @@ class Empresa extends Model
   
 		protected $primaryKey = 'id';
 
+		//public $timestamps = false;
+
 		protected $fillable = [
-		      'name', 'email', 'descripcion', 'web', 'telefono', 'confirmed', 'id_user',
+		      'nombre', 'email', 'descripcion', 'web', 'telefono', 'id_users',
 		];
 
 		public function users() {
-		    return $this->hasMany(User::class, 'id_user');
+		    return $this->hasMany(User::class, 'id_users');
 		}
 		  
 		public function propiedades() {
