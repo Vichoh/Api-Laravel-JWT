@@ -22,7 +22,8 @@ class User extends Authenticatable
     ];
 
     public function empresa() {
-        return $this->belongsTo(Empresa::class, 'id_user');
+        return $this->hasMany(Empresa::class, 'id_user');
+        
     }
 
 }

@@ -18,7 +18,7 @@ class Empresa extends Model
 		];
 
 		public function users() {
-		    return $this->hasMany(User::class, 'id_users');
+		    return $this->belongsTo(User::class, 'id_users');
 		}
 		  
 		public function propiedades() {

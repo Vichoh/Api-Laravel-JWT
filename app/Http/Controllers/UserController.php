@@ -60,7 +60,7 @@ class UserController extends Controller
             
             $user = User::findOrFail($id);
 
-            if (isset($user)) {
+            if (!isset($user)) {
                 
                 $data = [
 
@@ -78,7 +78,7 @@ class UserController extends Controller
             $data = [
                 'errors' => true,
                 'msg'   => $e->getMessage(),
-            ]
+            ];
 
             return \Response::json($data, 500);
         }

@@ -15,25 +15,9 @@ class PropiedadController extends Controller
      */
     public function index()
     {
-        $propiedades = Propiedad::All();
-        $respuesta = array();
-        $contador = 0;
-
-        foreach ($propiedades as $propiedad) {
-            
-            $empresa = Empresa::find($propiedad->id_empresa);
-
-            $respuesta [$contador]["id"] = $propiedad->id;
-            $respuesta [$contador]["nombre"] = $propiedad->nombre;
-            $respuesta [$contador]["descripcion"] = $propiedad->descripción;
-            $respuesta [$contador]["empresa"] = $empresa;
-
-            $contador++;
-
-        }
-
-
-        return  \Response::json($respuesta,200);
+        $propiedades = Propiedad::with('empresa')->get();
+       
+        return  \Response::json($propiedades, 200);
     }
 
     /**
@@ -61,8 +45,8 @@ class PropiedadController extends Controller
             
         } catch (\Exception $e) {
 
-            \Log:info('Error al crear Propiedad' . $e);
-            return \Response::json(['created'=>false],500)
+            \Log::info('Error al crear Propiedad' . $e);
+            return \Response::json(['created'=>false],500);
             
         }
     }
@@ -78,25 +62,18 @@ class PropiedadController extends Controller
 
         try {
 
-            $propiedad = Propiedad::findOrFail($id);
+            $propiedad = Propiedad::findOrFail($id)->with('empresa')->get();
 
-            $respuesta = Array();
+           
 
-            $empresa = Empresa::find($propiedad->id_empresa);
-
-            $respuesta [$contador]["id"] = $propiedad->id;
-            $respuesta [$contador]["nombre"] = $propiedad->nombre;
-            $respuesta [$contador]["descripcion"] = $propiedad->descripción;
-            $respuesta [$contador]["empresa"] = $empresa;
-
-            if (isset($propiedad) {
+            if (!isset($propiedad)) {
                 $datos = [
 
                     'error' => true,
                     'msg'   => 'No se encontro la propiedad con el id' .  $id,
                 ];
 
-                return \Response::json($data, 404);
+                return \Response::json($datos, 404);
             }
 
               
@@ -111,7 +88,7 @@ class PropiedadController extends Controller
         }
 
 
-        return \Response::json($respuesta, 200);
+        return \Response::json($propiedad, 200);
     }
 
     /**
