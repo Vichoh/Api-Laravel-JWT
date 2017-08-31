@@ -89,7 +89,7 @@ class PropiedadController extends Controller
             $respuesta [$contador]["descripcion"] = $propiedad->descripción;
             $respuesta [$contador]["empresa"] = $empresa;
 
-            if ($propiedad) {
+            if (isset($propiedad) {
                 $datos = [
 
                     'error' => true,
